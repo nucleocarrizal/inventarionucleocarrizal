@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inventario - Núcleo Carrizal</title>
+  <title>Ficha de Instrumento - Núcleo Carrizal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
     body, html {
@@ -11,9 +14,9 @@
       padding: 0;
       width: 100%;
       height: 100%;
-      font-family: Arial, Helvetica, sans-serif;
-      background-color: #f1f5f9;
-      color: #0f172a;
+      font-family: 'Architects Daughter', 'Inter', Arial, sans-serif;
+      background-color: #f4f6f9;
+      color: #1e293b;
     }
     .iframe-mode {
       overflow: hidden;
@@ -24,109 +27,105 @@
       border: none;
       display: block;
     }
-    .ficha-wrapper {
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 16px;
+    .page-wrapper {
       min-height: 100vh;
+      padding: 18px 14px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
     }
     .ficha-card {
       width: 100%;
+      max-width: 460px;
       background: #ffffff;
-      border-radius: 14px;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
-      overflow: hidden;
+      border-radius: 16px;
+      padding: 24px 22px;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
       border: 1px solid #e2e8f0;
     }
     .ficha-header {
-      background: #0284c7;
-      color: #ffffff;
-      padding: 16px 18px;
+      text-align: center;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #0284c7;
+      margin-bottom: 18px;
     }
-    .ficha-header .sub {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      opacity: 0.9;
-      font-weight: bold;
-    }
-    .ficha-header h1 {
-      margin: 4px 0 0 0;
+    .ficha-titulo {
+      margin: 0;
       font-size: 20px;
-      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      color: #0284c7;
+      text-transform: uppercase;
     }
-    .ficha-inv {
-      display: inline-block;
-      margin-top: 8px;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: bold;
-    }
-    .ficha-body {
-      padding: 16px 18px;
-    }
-    .fila {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 9px 0;
-      border-bottom: 1px solid #f1f5f9;
-      font-size: 14px;
-    }
-    .fila:last-child {
-      border-bottom: none;
-    }
-    .etiqueta {
-      color: #64748b;
-      font-weight: 600;
-      flex-shrink: 0;
-    }
-    .valor {
-      color: #0f172a;
+    .ficha-subtitulo {
+      margin-top: 4px;
+      font-size: 12px;
       font-weight: 700;
-      text-align: right;
+      letter-spacing: 0.8px;
+      color: #475569;
+      text-transform: uppercase;
+    }
+    .campo {
+      margin-bottom: 15px;
+    }
+    .campo:last-child {
+      margin-bottom: 0;
+    }
+    .campo-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 3px;
+    }
+    .campo-valor {
+      font-size: 17px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.3;
       word-break: break-word;
     }
-    .comodato-box {
-      margin-top: 12px;
-      padding: 12px 14px;
-      background: #f8fafc;
-      border: 1px solid #cbd5e1;
-      border-left: 4px solid #0284c7;
-      border-radius: 8px;
-    }
-    .comodato-titulo {
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
+    .inv-destacado {
+      font-size: 19px;
       color: #0284c7;
-      margin-bottom: 6px;
+      letter-spacing: 0.5px;
     }
-    .estado-msg {
+    .badge-condicion {
+      display: inline-block;
+      background-color: #dcfce7;
+      color: #166534;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-inoperativo {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+    .estado-box {
       text-align: center;
-      padding: 28px 18px;
+      padding: 24px 10px;
       font-size: 15px;
       line-height: 1.5;
     }
-    .error-msg {
+    .error-text {
       color: #b91c1c;
-      font-weight: bold;
+      font-weight: 700;
     }
-    .btn-inicio {
+    .btn-volver {
       display: inline-block;
       margin-top: 14px;
-      padding: 10px 16px;
-      background: #0284c7;
+      padding: 10px 18px;
+      background-color: #0284c7;
       color: #ffffff;
       text-decoration: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 13px;
-      font-weight: bold;
+      font-weight: 700;
     }
   </style>
 </head>
@@ -147,14 +146,35 @@
         .replace(/"/g, "&quot;");
     }
 
+    function renderError(mensaje) {
+      appEl.innerHTML = `
+        <div class="page-wrapper">
+          <div class="ficha-card">
+            <div class="ficha-header">
+              <h1 class="ficha-titulo">Ficha de Instrumento</h1>
+              <div class="ficha-subtitulo">Sistema · Núcleo Carrizal</div>
+            </div>
+            <div class="estado-box">
+              <div class="error-text">⚠️ ${escapeHtml(mensaje)}</div>
+              <a class="btn-volver" href="${escapeHtml(window.location.pathname)}">Ir al inventario</a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     if (!invParam) {
       document.body.classList.add("iframe-mode");
       appEl.innerHTML = `<iframe src="${escapeHtml(APPS_SCRIPT_URL)}" allow="fullscreen"></iframe>`;
     } else {
       appEl.innerHTML = `
-        <div class="ficha-wrapper">
+        <div class="page-wrapper">
           <div class="ficha-card">
-            <div class="estado-msg">🔄 Consultando inventario <b>${escapeHtml(invParam)}</b>...</div>
+            <div class="ficha-header">
+              <h1 class="ficha-titulo">Ficha de Instrumento</h1>
+              <div class="ficha-subtitulo">Sistema · Núcleo Carrizal</div>
+            </div>
+            <div class="estado-box">🔄 Consultando inventario <b>${escapeHtml(invParam)}</b>...</div>
           </div>
         </div>
       `;
@@ -162,49 +182,78 @@
       const callbackName = "cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
       let respondido = false;
 
-      window[callbackName] = function(data) {
+      const timer = setTimeout(() => {
+        if (respondido) return;
         respondido = true;
+        delete window[callbackName];
+        renderError("El servidor tardó demasiado en responder.");
+      }, 10000);
+
+      window[callbackName] = function(data) {
+        if (respondido) return;
+        respondido = true;
+        clearTimeout(timer);
         delete window[callbackName];
 
         if (!data || !data.success) {
-          appEl.innerHTML = `
-            <div class="ficha-wrapper">
-              <div class="ficha-card">
-                <div class="estado-msg">
-                  <div class="error-msg">⚠️ ${escapeHtml((data && data.error) || "Instrumento no encontrado.")}</div>
-                  <a class="btn-inicio" href="${escapeHtml(window.location.pathname)}">Ir al inventario</a>
-                </div>
-              </div>
-            </div>
-          `;
+          renderError((data && data.error) || "Instrumento no encontrado.");
           return;
         }
 
-        const comodatoHtml = data.mostrarComodato ? `
-          <div class="comodato-box">
-            <div class="comodato-titulo">Datos de Comodato / Asignación</div>
-            <div class="fila"><span class="etiqueta">Acta / Correlativo:</span><span class="valor">${escapeHtml(data.correlativoComodato)}</span></div>
-            <div class="fila"><span class="etiqueta">Asignado a:</span><span class="valor">${escapeHtml(data.asignadoA)}</span></div>
-            <div class="fila"><span class="etiqueta">Fecha inicio:</span><span class="valor">${escapeHtml(data.fechaInicioComodato)}</span></div>
-            <div class="fila"><span class="etiqueta">Estado comodato:</span><span class="valor">${escapeHtml(data.estadoComodato)}</span></div>
+        const condStr = (data.condicion || "OPERATIVO").toString().trim();
+        const esMalEstado = /INOPERATIV|DANAD|MAL|REPARACION/i.test(condStr);
+        const badgeClass = esMalEstado ? "badge-condicion badge-inoperativo" : "badge-condicion";
+
+        const asignadoHtml = data.mostrarComodato ? `
+          <div class="campo">
+            <div class="campo-label">Asignado a</div>
+            <div class="campo-valor">${escapeHtml(data.asignadoA || "N/A")}</div>
           </div>
         ` : "";
 
         appEl.innerHTML = `
-          <div class="ficha-wrapper">
+          <div class="page-wrapper">
             <div class="ficha-card">
               <div class="ficha-header">
-                <div class="sub">El Sistema · Núcleo Carrizal</div>
-                <h1>${escapeHtml(data.instrumento)}</h1>
-                <div class="ficha-inv">INV: ${escapeHtml(data.inv)}</div>
+                <h1 class="ficha-titulo">Ficha de Instrumento</h1>
+                <div class="ficha-subtitulo">Sistema · Núcleo Carrizal</div>
               </div>
-              <div class="ficha-body">
-                <div class="fila"><span class="etiqueta">Marca / Detalle:</span><span class="valor">${escapeHtml(data.marca)}</span></div>
-                <div class="fila"><span class="etiqueta">Serial:</span><span class="valor">${escapeHtml(data.serial)}</span></div>
-                <div class="fila"><span class="etiqueta">Condición:</span><span class="valor">${escapeHtml(data.condicion)}</span></div>
-                <div class="fila"><span class="etiqueta">Ubicación:</span><span class="valor">${escapeHtml(data.ubicacion)}</span></div>
-                <div class="fila"><span class="etiqueta">Observaciones:</span><span class="valor">${escapeHtml(data.observaciones)}</span></div>
-                ${comodatoHtml}
+
+              <div class="campo">
+                <div class="campo-label">N° Inventario</div>
+                <div class="campo-valor inv-destacado">${escapeHtml(data.inv)}</div>
+              </div>
+
+              <div class="campo">
+                <div class="campo-label">Instrumento</div>
+                <div class="campo-valor">${escapeHtml(data.instrumento)}</div>
+              </div>
+
+              <div class="campo">
+                <div class="campo-label">Marca / Modelo / Medida</div>
+                <div class="campo-valor">${escapeHtml(data.marca)}</div>
+              </div>
+
+              <div class="campo">
+                <div class="campo-label">Serial</div>
+                <div class="campo-valor">${escapeHtml(data.serial)}</div>
+              </div>
+
+              <div class="campo">
+                <div class="campo-label">Condición</div>
+                <div class="campo-valor"><span class="${badgeClass}">${escapeHtml(condStr)}</span></div>
+              </div>
+
+              <div class="campo">
+                <div class="campo-label">Ubicación actual</div>
+                <div class="campo-valor">${escapeHtml(data.ubicacion)}</div>
+              </div>
+
+              ${asignadoHtml}
+
+              <div class="campo">
+                <div class="campo-label">Observaciones</div>
+                <div class="campo-valor">${escapeHtml(data.observaciones)}</div>
               </div>
             </div>
           </div>
@@ -215,17 +264,10 @@
       scriptTag.src = `${APPS_SCRIPT_URL}?inv=${encodeURIComponent(invParam)}&callback=${callbackName}`;
       scriptTag.onerror = function() {
         if (respondido) return;
+        respondido = true;
+        clearTimeout(timer);
         delete window[callbackName];
-        appEl.innerHTML = `
-          <div class="ficha-wrapper">
-            <div class="ficha-card">
-              <div class="estado-msg">
-                <div class="error-msg">⚠️ No se pudo conectar con el servidor de inventario.</div>
-                <a class="btn-inicio" href="${escapeHtml(window.location.pathname)}">Ir al inventario</a>
-              </div>
-            </div>
-          </div>
-        `;
+        renderError("No se pudo conectar con el servidor de inventario.");
       };
       document.body.appendChild(scriptTag);
     }
