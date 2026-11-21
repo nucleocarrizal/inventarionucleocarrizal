@@ -146,7 +146,11 @@
         .replace(/"/g, "&quot;");
     }
 
-    function renderError(mensaje) {
+    function renderError(mensaje, urlIntento) {
+      const detalleUrl = urlIntento
+        ? `<div style="margin-top:10px; font-size:11px; color:#64748b; word-break:break-all;">${escapeHtml(urlIntento)}</div>`
+        : "";
+
       appEl.innerHTML = `
         <div class="page-wrapper">
           <div class="ficha-card">
@@ -156,6 +160,7 @@
             </div>
             <div class="estado-box">
               <div class="error-text">⚠️ ${escapeHtml(mensaje)}</div>
+              ${detalleUrl}
               <a class="btn-volver" href="${escapeHtml(window.location.pathname)}">Ir al inventario</a>
             </div>
           </div>
@@ -180,14 +185,15 @@
       `;
 
       const callbackName = "cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+      const scriptUrl = `${APPS_SCRIPT_URL}?inv=${encodeURIComponent(invParam)}&callback=${callbackName}`;
       let respondido = false;
 
       const timer = setTimeout(() => {
         if (respondido) return;
         respondido = true;
         delete window[callbackName];
-        renderError("El servidor tardó demasiado en responder.");
-      }, 10000);
+        renderError("El servidor tardó demasiado en responder.", scriptUrl);
+      }, 12000);
 
       window[callbackName] = function(data) {
         if (respondido) return;
@@ -261,13 +267,14 @@
       };
 
       const scriptTag = document.createElement("script");
-      scriptTag.src = `${APPS_SCRIPT_URL}?inv=${encodeURIComponent(invParam)}&callback=${callbackName}`;
+      scriptTag.src = scriptUrl;
+      scriptTag.referrerPolicy = "no-referrer";
       scriptTag.onerror = function() {
         if (respondido) return;
         respondido = true;
         clearTimeout(timer);
         delete window[callbackName];
-        renderError("No se pudo conectar con el servidor de inventario.");
+        renderError("No se pudo conectar con el servidor de inventario.", scriptUrl);
       };
       document.body.appendChild(scriptTag);
     }
