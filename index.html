@@ -159,60 +159,75 @@
         </div>
       `;
 
-      const endpoint = `${APPS_SCRIPT_URL}?inv=${encodeURIComponent(invParam)}`;
+      const callbackName = "cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+      let respondido = false;
 
-      fetch(endpoint)
-        .then(res => {
-          if (!res.ok) throw new Error("No se pudo conectar con el servidor de inventario.");
-          return res.json();
-        })
-        .then(data => {
-          if (!data || !data.success) {
-            throw new Error((data && data.error) || "Instrumento no encontrado.");
-          }
+      window[callbackName] = function(data) {
+        respondido = true;
+        delete window[callbackName];
 
-          const comodatoHtml = data.mostrarComodato ? `
-            <div class="comodato-box">
-              <div class="comodato-titulo">Datos de Comodato / Asignación</div>
-              <div class="fila"><span class="etiqueta">Acta / Correlativo:</span><span class="valor">${escapeHtml(data.correlativoComodato)}</span></div>
-              <div class="fila"><span class="etiqueta">Asignado a:</span><span class="valor">${escapeHtml(data.asignadoA)}</span></div>
-              <div class="fila"><span class="etiqueta">Fecha inicio:</span><span class="valor">${escapeHtml(data.fechaInicioComodato)}</span></div>
-              <div class="fila"><span class="etiqueta">Estado comodato:</span><span class="valor">${escapeHtml(data.estadoComodato)}</span></div>
-            </div>
-          ` : "";
-
-          appEl.innerHTML = `
-            <div class="ficha-wrapper">
-              <div class="ficha-card">
-                <div class="ficha-header">
-                  <div class="sub">El Sistema · Núcleo Carrizal</div>
-                  <h1>${escapeHtml(data.instrumento)}</h1>
-                  <div class="ficha-inv">INV: ${escapeHtml(data.inv)}</div>
-                </div>
-                <div class="ficha-body">
-                  <div class="fila"><span class="etiqueta">Marca / Detalle:</span><span class="valor">${escapeHtml(data.marca)}</span></div>
-                  <div class="fila"><span class="etiqueta">Serial:</span><span class="valor">${escapeHtml(data.serial)}</span></div>
-                  <div class="fila"><span class="etiqueta">Condición:</span><span class="valor">${escapeHtml(data.condicion)}</span></div>
-                  <div class="fila"><span class="etiqueta">Ubicación:</span><span class="valor">${escapeHtml(data.ubicacion)}</span></div>
-                  <div class="fila"><span class="etiqueta">Observaciones:</span><span class="valor">${escapeHtml(data.observaciones)}</span></div>
-                  ${comodatoHtml}
-                </div>
-              </div>
-            </div>
-          `;
-        })
-        .catch(err => {
+        if (!data || !data.success) {
           appEl.innerHTML = `
             <div class="ficha-wrapper">
               <div class="ficha-card">
                 <div class="estado-msg">
-                  <div class="error-msg">⚠️ ${escapeHtml(err.message || "Error al consultar el instrumento.")}</div>
+                  <div class="error-msg">⚠️ ${escapeHtml((data && data.error) || "Instrumento no encontrado.")}</div>
                   <a class="btn-inicio" href="${escapeHtml(window.location.pathname)}">Ir al inventario</a>
                 </div>
               </div>
             </div>
           `;
-        });
+          return;
+        }
+
+        const comodatoHtml = data.mostrarComodato ? `
+          <div class="comodato-box">
+            <div class="comodato-titulo">Datos de Comodato / Asignación</div>
+            <div class="fila"><span class="etiqueta">Acta / Correlativo:</span><span class="valor">${escapeHtml(data.correlativoComodato)}</span></div>
+            <div class="fila"><span class="etiqueta">Asignado a:</span><span class="valor">${escapeHtml(data.asignadoA)}</span></div>
+            <div class="fila"><span class="etiqueta">Fecha inicio:</span><span class="valor">${escapeHtml(data.fechaInicioComodato)}</span></div>
+            <div class="fila"><span class="etiqueta">Estado comodato:</span><span class="valor">${escapeHtml(data.estadoComodato)}</span></div>
+          </div>
+        ` : "";
+
+        appEl.innerHTML = `
+          <div class="ficha-wrapper">
+            <div class="ficha-card">
+              <div class="ficha-header">
+                <div class="sub">El Sistema · Núcleo Carrizal</div>
+                <h1>${escapeHtml(data.instrumento)}</h1>
+                <div class="ficha-inv">INV: ${escapeHtml(data.inv)}</div>
+              </div>
+              <div class="ficha-body">
+                <div class="fila"><span class="etiqueta">Marca / Detalle:</span><span class="valor">${escapeHtml(data.marca)}</span></div>
+                <div class="fila"><span class="etiqueta">Serial:</span><span class="valor">${escapeHtml(data.serial)}</span></div>
+                <div class="fila"><span class="etiqueta">Condición:</span><span class="valor">${escapeHtml(data.condicion)}</span></div>
+                <div class="fila"><span class="etiqueta">Ubicación:</span><span class="valor">${escapeHtml(data.ubicacion)}</span></div>
+                <div class="fila"><span class="etiqueta">Observaciones:</span><span class="valor">${escapeHtml(data.observaciones)}</span></div>
+                ${comodatoHtml}
+              </div>
+            </div>
+          </div>
+        `;
+      };
+
+      const scriptTag = document.createElement("script");
+      scriptTag.src = `${APPS_SCRIPT_URL}?inv=${encodeURIComponent(invParam)}&callback=${callbackName}`;
+      scriptTag.onerror = function() {
+        if (respondido) return;
+        delete window[callbackName];
+        appEl.innerHTML = `
+          <div class="ficha-wrapper">
+            <div class="ficha-card">
+              <div class="estado-msg">
+                <div class="error-msg">⚠️ No se pudo conectar con el servidor de inventario.</div>
+                <a class="btn-inicio" href="${escapeHtml(window.location.pathname)}">Ir al inventario</a>
+              </div>
+            </div>
+          </div>
+        `;
+      };
+      document.body.appendChild(scriptTag);
     }
   </script>
 </body>
