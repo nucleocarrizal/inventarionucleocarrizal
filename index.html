@@ -22,6 +22,10 @@
   </style>
 </head>
 <body>
-  <iframe src="https://script.google.com/macros/s/AKfycbwqMLhfAQCnSPAsS2NU77_DSkGrmzOCzUj6Pd_lS_6AhQ41d67gfwEgyJBl8ZTnewNt/exec"></iframe>
+  <iframe id="appFrame"></iframe>
+  <script>
+    const baseUrl = "https://script.google.com/macros/s/AKfycbwqMLhfFAQcnSPAsS2NU77_DSkGrmzOcZUj6Pd_1S_6AhQ41d67gfwEgyJB18ZTnewNt/exec";
+    document.getElementById("appFrame").src = baseUrl + window.location.search;
+  </script>
 </body>
 </html>
