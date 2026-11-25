@@ -1,283 +1,500 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ficha de Instrumento - Núcleo Carrizal</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventario de Instrumentos - Núcleo Carrizal</title>
   <style>
-    * { box-sizing: border-box; }
-    body, html {
+    :root {
+      --azul-primario: #0b4a8b;
+      --azul-oscuro: #073361;
+      --fondo: #f3f6fa;
+      --tarjeta: #ffffff;
+      --texto: #1e293b;
+      --texto-suave: #64748b;
+      --borde: #e2e8f0;
+      --verde-bg: #dcfce7;
+      --verde-txt: #166534;
+      --amarillo-bg: #fef9c3;
+      --amarillo-txt: #854d0e;
+      --rojo-bg: #fee2e2;
+      --rojo-txt: #991b1b;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      width: 100%;
-      height: 100%;
-      font-family: 'Architects Daughter', 'Inter', Arial, sans-serif;
-      background-color: #f4f6f9;
-      color: #1e293b;
     }
-    .iframe-mode {
-      overflow: hidden;
-    }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-    .page-wrapper {
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--fondo);
+      color: var(--texto);
       min-height: 100vh;
-      padding: 18px 14px;
       display: flex;
-      align-items: flex-start;
       justify-content: center;
+      align-items: flex-start;
+      padding: 20px 14px 40px;
     }
-    .ficha-card {
+
+    .card {
       width: 100%;
-      max-width: 460px;
-      background: #ffffff;
+      max-width: 520px;
+      background: var(--tarjeta);
       border-radius: 16px;
-      padding: 24px 22px;
       box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
-      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      border: 1px solid var(--borde);
     }
-    .ficha-header {
+
+    .header {
+      background: linear-gradient(135deg, var(--azul-primario), var(--azul-oscuro));
+      color: #ffffff;
+      padding: 22px 20px;
       text-align: center;
-      padding-bottom: 14px;
-      border-bottom: 2px solid #0284c7;
-      margin-bottom: 18px;
     }
-    .ficha-titulo {
-      margin: 0;
+
+    .header-sub {
+      font-size: 11px;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      opacity: 0.85;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .header-title {
       font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 0.6px;
-      color: #0284c7;
-      text-transform: uppercase;
-    }
-    .ficha-subtitulo {
-      margin-top: 4px;
-      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.8px;
-      color: #475569;
+      letter-spacing: 0.3px;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .state-box {
+      text-align: center;
+      padding: 28px 12px;
+    }
+
+    .spinner {
+      width: 38px;
+      height: 38px;
+      border: 4px solid #dbeafe;
+      border-top-color: var(--azul-primario);
+      border-radius: 50%;
+      margin: 0 auto 14px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .state-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--texto);
+    }
+
+    .state-desc {
+      font-size: 14px;
+      color: var(--texto-suave);
+      line-height: 1.45;
+    }
+
+    .instrument-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--borde);
+    }
+
+    .instrument-name {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--azul-oscuro);
+      line-height: 1.2;
       text-transform: uppercase;
     }
-    .campo {
-      margin-bottom: 15px;
+
+    .inv-code {
+      font-size: 12px;
+      color: var(--texto-suave);
+      margin-top: 4px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
     }
-    .campo:last-child {
-      margin-bottom: 0;
-    }
-    .campo-label {
+
+    .badge {
+      display: inline-block;
+      padding: 5px 11px;
+      border-radius: 999px;
       font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.7px;
-      text-transform: uppercase;
-      color: #64748b;
-      margin-bottom: 3px;
-    }
-    .campo-valor {
-      font-size: 17px;
-      font-weight: 700;
-      color: #0f172a;
-      line-height: 1.3;
-      word-break: break-word;
-    }
-    .inv-destacado {
-      font-size: 19px;
-      color: #0284c7;
-      letter-spacing: 0.5px;
-    }
-    .badge-condicion {
-      display: inline-block;
-      background-color: #dcfce7;
-      color: #166534;
-      font-size: 13px;
-      font-weight: 800;
-      padding: 4px 12px;
-      border-radius: 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      white-space: nowrap;
     }
-    .badge-inoperativo {
-      background-color: #fee2e2;
-      color: #991b1b;
+
+    .badge-ok {
+      background: var(--verde-bg);
+      color: var(--verde-txt);
     }
-    .estado-box {
-      text-align: center;
-      padding: 24px 10px;
-      font-size: 15px;
-      line-height: 1.5;
+
+    .badge-warn {
+      background: var(--amarillo-bg);
+      color: var(--amarillo-txt);
     }
-    .error-text {
-      color: #b91c1c;
-      font-weight: 700;
+
+    .badge-bad {
+      background: var(--rojo-bg);
+      color: var(--rojo-txt);
     }
-    .btn-volver {
-      display: inline-block;
-      margin-top: 14px;
-      padding: 10px 18px;
-      background-color: #0284c7;
-      color: #ffffff;
-      text-decoration: none;
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      background: #f8fafc;
+      border: 1px solid var(--borde);
       border-radius: 10px;
-      font-size: 13px;
+      padding: 11px 12px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .label {
+      font-size: 10px;
       font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--texto-suave);
+      margin-bottom: 4px;
+    }
+
+    .value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--texto);
+      word-break: break-word;
+      line-height: 1.35;
+    }
+
+    .comodato-box {
+      margin-top: 16px;
+      padding: 14px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+    }
+
+    .comodato-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--azul-primario);
+      margin-bottom: 10px;
+    }
+
+    .search-box {
+      margin-top: 6px;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 11px 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--azul-primario);
+      box-shadow: 0 0 0 3px rgba(11, 74, 139, 0.12);
+    }
+
+    .btn {
+      background: var(--azul-primario);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: var(--azul-oscuro);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      margin-top: 16px;
+      background: #e2e8f0;
+      color: var(--texto);
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 440px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .instrument-top {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="app"></div>
+  <div class="card">
+    <div class="header">
+      <div class="header-sub">El Sistema · Control de Inventario</div>
+      <div class="header-title">NÚCLEO CARRIZAL</div>
+    </div>
+
+    <div class="content">
+      <!-- Estado de carga -->
+      <div id="view-loading" class="state-box hidden">
+        <div class="spinner"></div>
+        <div class="state-title">Consultando inventario...</div>
+        <div class="state-desc">Obteniendo información actualizada del instrumento.</div>
+      </div>
+
+      <!-- Estado de error -->
+      <div id="view-error" class="state-box hidden">
+        <div class="state-title" style="color:#991b1b;">No se encontró el instrumento</div>
+        <div id="error-message" class="state-desc">Verifica el código QR o intenta buscarlo manualmente.</div>
+        <button class="btn btn-secondary" onclick="mostrarBuscador()">Buscar otro instrumento</button>
+      </div>
+
+      <!-- Buscador manual (cuando se abre sin ?inv= ni ?fila=) -->
+      <div id="view-search" class="search-box hidden">
+        <div class="state-title">Buscar instrumento</div>
+        <div class="state-desc">Ingresa el número de inventario para consultar la ficha en vivo.</div>
+        <form class="search-form" onsubmit="buscarManual(event)">
+          <input
+            id="input-inv"
+            class="search-input"
+            type="text"
+            placeholder="Ej: 8418560119740132"
+            autocomplete="off"
+            required
+          />
+          <button class="btn" type="submit">Buscar</button>
+        </form>
+      </div>
+
+      <!-- Ficha del instrumento -->
+      <div id="view-result" class="hidden">
+        <div class="instrument-top">
+          <div>
+            <div id="res-instrumento" class="instrument-name">-</div>
+            <div class="inv-code">INV: <span id="res-inv">-</span></div>
+          </div>
+          <span id="res-condicion-badge" class="badge badge-ok">OPERATIVO</span>
+        </div>
+
+        <div class="grid">
+          <div class="field full">
+            <div class="label">Marca / Modelo / Medida</div>
+            <div id="res-marca" class="value">-</div>
+          </div>
+
+          <div class="field">
+            <div class="label">Serial</div>
+            <div id="res-serial" class="value">-</div>
+          </div>
+
+          <div class="field">
+            <div class="label">Ubicación actual</div>
+            <div id="res-ubicacion" class="value">-</div>
+          </div>
+
+          <div class="field full">
+            <div class="label">Asignado a</div>
+            <div id="res-asignado" class="value">-</div>
+          </div>
+
+          <div class="field full">
+            <div class="label">Observaciones</div>
+            <div id="res-observaciones" class="value">-</div>
+          </div>
+        </div>
+
+        <div id="comodato-section" class="comodato-box hidden">
+          <div class="comodato-title">Datos de Comodato / Asignación</div>
+          <div class="grid">
+            <div class="field">
+              <div class="label">Correlativo</div>
+              <div id="res-correlativo" class="value">-</div>
+            </div>
+            <div class="field">
+              <div class="label">Fecha inicio</div>
+              <div id="res-fecha-comodato" class="value">-</div>
+            </div>
+            <div class="field full">
+              <div class="label">Estado del comodato</div>
+              <div id="res-estado-comodato" class="value">-</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary" onclick="mostrarBuscador()">Consultar otro instrumento</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwqMLhfAQCnSPAsS2NU77_DSkGrmzOCzUj6Pd_lS_6AhQ41d67gfwEgyJBl8ZTnewNt/exec";
-    const params = new URLSearchParams(window.location.search);
-    const invParam = (params.get("inv") || params.get("INV") || "").trim();
-    const appEl = document.getElementById("app");
 
-    function escapeHtml(txt) {
-      return String(txt || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+    function mostrarVista(id) {
+      ["view-loading", "view-error", "view-search", "view-result"].forEach(v => {
+        document.getElementById(v).classList.add("hidden");
+      });
+      document.getElementById(id).classList.remove("hidden");
     }
 
-    function renderError(mensaje, urlIntento) {
-      const detalleUrl = urlIntento
-        ? `<div style="margin-top:10px; font-size:11px; color:#64748b; word-break:break-all;">${escapeHtml(urlIntento)}</div>`
-        : "";
-
-      appEl.innerHTML = `
-        <div class="page-wrapper">
-          <div class="ficha-card">
-            <div class="ficha-header">
-              <h1 class="ficha-titulo">Ficha de Instrumento</h1>
-              <div class="ficha-subtitulo">Sistema · Núcleo Carrizal</div>
-            </div>
-            <div class="estado-box">
-              <div class="error-text">⚠️ ${escapeHtml(mensaje)}</div>
-              ${detalleUrl}
-              <a class="btn-volver" href="${escapeHtml(window.location.pathname)}">Ir al inventario</a>
-            </div>
-          </div>
-        </div>
-      `;
+    function mostrarBuscador() {
+      mostrarVista("view-search");
+      const input = document.getElementById("input-inv");
+      if (input) input.focus();
     }
 
-    if (!invParam) {
-      document.body.classList.add("iframe-mode");
-      appEl.innerHTML = `<iframe src="${escapeHtml(APPS_SCRIPT_URL)}" allow="fullscreen"></iframe>`;
-    } else {
-      appEl.innerHTML = `
-        <div class="page-wrapper">
-          <div class="ficha-card">
-            <div class="ficha-header">
-              <h1 class="ficha-titulo">Ficha de Instrumento</h1>
-              <div class="ficha-subtitulo">Sistema · Núcleo Carrizal</div>
-            </div>
-            <div class="estado-box">🔄 Consultando inventario <b>${escapeHtml(invParam)}</b>...</div>
-          </div>
-        </div>
-      `;
+    function obtenerClaseBadge(condicion) {
+      const c = (condicion || "").toUpperCase();
+      if (/DAÑAD|MAL|INOPERATIV|DESINCORPORAD|ROTO|REPARAR/.test(c)) return "badge badge-bad";
+      if (/REGULAR|MANTENIMIENTO|REVISION|REVISIÓN|PENDIENTE/.test(c)) return "badge badge-warn";
+      return "badge badge-ok";
+    }
+
+    function renderizarFicha(data) {
+      document.getElementById("res-instrumento").textContent = data.instrumento || "Sin especificar";
+      document.getElementById("res-inv").textContent = data.inv || "S/I";
+      document.getElementById("res-marca").textContent = data.marca || "Sin especificar";
+      document.getElementById("res-serial").textContent = data.serial || "Sin serial";
+      document.getElementById("res-ubicacion").textContent = data.ubicacion || "Sin ubicación";
+      document.getElementById("res-asignado").textContent = data.asignadoA || "Depósito";
+      document.getElementById("res-observaciones").textContent = data.observaciones || "Sin observaciones";
+
+      const badge = document.getElementById("res-condicion-badge");
+      badge.textContent = data.condicion || "Operativo";
+      badge.className = obtenerClaseBadge(data.condicion);
+
+      const comodatoSec = document.getElementById("comodato-section");
+      if (data.mostrarComodato) {
+        document.getElementById("res-correlativo").textContent = data.correlativoComodato || "N/A";
+        document.getElementById("res-fecha-comodato").textContent = data.fechaInicioComodato || "N/A";
+        document.getElementById("res-estado-comodato").textContent = data.estadoComodato || "N/A";
+        comodatoSec.classList.remove("hidden");
+      } else {
+        comodatoSec.classList.add("hidden");
+      }
+
+      mostrarVista("view-result");
+    }
+
+    function consultarInstrumento(invParam, filaParam) {
+      mostrarVista("view-loading");
 
       const callbackName = "cb_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
-      const scriptUrl = `${APPS_SCRIPT_URL}?inv=${encodeURIComponent(invParam)}&callback=${callbackName}`;
-      let respondido = false;
+      let terminado = false;
+      const scriptTag = document.createElement("script");
 
-      const timer = setTimeout(() => {
-        if (respondido) return;
-        respondido = true;
-        delete window[callbackName];
-        renderError("El servidor tardó demasiado en responder.", scriptUrl);
-      }, 12000);
+      const limpiar = () => {
+        if (scriptTag.parentNode) scriptTag.parentNode.removeChild(scriptTag);
+        try { delete window[callbackName]; } catch (e) { window[callbackName] = undefined; }
+      };
+
+      const timeoutId = setTimeout(() => {
+        if (terminado) return;
+        terminado = true;
+        limpiar();
+        document.getElementById("error-message").textContent =
+          "Tiempo de espera agotado al conectar con el inventario. Intenta nuevamente.";
+        mostrarVista("view-error");
+      }, 15000);
 
       window[callbackName] = function(data) {
-        if (respondido) return;
-        respondido = true;
-        clearTimeout(timer);
-        delete window[callbackName];
+        if (terminado) return;
+        terminado = true;
+        clearTimeout(timeoutId);
+        limpiar();
 
-        if (!data || !data.success) {
-          renderError((data && data.error) || "Instrumento no encontrado.");
-          return;
+        if (data && data.success) {
+          renderizarFicha(data);
+        } else {
+          document.getElementById("error-message").textContent =
+            (data && data.error) ? data.error : "Instrumento no encontrado.";
+          mostrarVista("view-error");
         }
-
-        const condStr = (data.condicion || "OPERATIVO").toString().trim();
-        const esMalEstado = /INOPERATIV|DANAD|MAL|REPARACION/i.test(condStr);
-        const badgeClass = esMalEstado ? "badge-condicion badge-inoperativo" : "badge-condicion";
-
-        const asignadoHtml = data.mostrarComodato ? `
-          <div class="campo">
-            <div class="campo-label">Asignado a</div>
-            <div class="campo-valor">${escapeHtml(data.asignadoA || "N/A")}</div>
-          </div>
-        ` : "";
-
-        appEl.innerHTML = `
-          <div class="page-wrapper">
-            <div class="ficha-card">
-              <div class="ficha-header">
-                <h1 class="ficha-titulo">Ficha de Instrumento</h1>
-                <div class="ficha-subtitulo">Sistema · Núcleo Carrizal</div>
-              </div>
-
-              <div class="campo">
-                <div class="campo-label">N° Inventario</div>
-                <div class="campo-valor inv-destacado">${escapeHtml(data.inv)}</div>
-              </div>
-
-              <div class="campo">
-                <div class="campo-label">Instrumento</div>
-                <div class="campo-valor">${escapeHtml(data.instrumento)}</div>
-              </div>
-
-              <div class="campo">
-                <div class="campo-label">Marca / Modelo / Medida</div>
-                <div class="campo-valor">${escapeHtml(data.marca)}</div>
-              </div>
-
-              <div class="campo">
-                <div class="campo-label">Serial</div>
-                <div class="campo-valor">${escapeHtml(data.serial)}</div>
-              </div>
-
-              <div class="campo">
-                <div class="campo-label">Condición</div>
-                <div class="campo-valor"><span class="${badgeClass}">${escapeHtml(condStr)}</span></div>
-              </div>
-
-              <div class="campo">
-                <div class="campo-label">Ubicación actual</div>
-                <div class="campo-valor">${escapeHtml(data.ubicacion)}</div>
-              </div>
-
-              ${asignadoHtml}
-
-              <div class="campo">
-                <div class="campo-label">Observaciones</div>
-                <div class="campo-valor">${escapeHtml(data.observaciones)}</div>
-              </div>
-            </div>
-          </div>
-        `;
       };
 
-      const scriptTag = document.createElement("script");
-      scriptTag.src = scriptUrl;
-      scriptTag.referrerPolicy = "no-referrer";
       scriptTag.onerror = function() {
-        if (respondido) return;
-        respondido = true;
-        clearTimeout(timer);
-        delete window[callbackName];
-        renderError("No se pudo conectar con el servidor de inventario.", scriptUrl);
+        if (terminado) return;
+        terminado = true;
+        clearTimeout(timeoutId);
+        limpiar();
+        document.getElementById("error-message").textContent =
+          "No se pudo conectar con el servidor de inventario.";
+        mostrarVista("view-error");
       };
+
+      const queryParam = invParam
+        ? `inv=${encodeURIComponent(invParam)}`
+        : `fila=${encodeURIComponent(filaParam)}`;
+
+      scriptTag.src = `${APPS_SCRIPT_URL}?${queryParam}&callback=${callbackName}&_t=${Date.now()}`;
       document.body.appendChild(scriptTag);
     }
+
+    function buscarManual(event) {
+      event.preventDefault();
+      const val = document.getElementById("input-inv").value.trim();
+      if (!val) return;
+      const nuevaUrl = `${window.location.pathname}?inv=${encodeURIComponent(val)}`;
+      window.history.replaceState({}, "", nuevaUrl);
+      consultarInstrumento(val, "");
+    }
+
+    (function iniciar() {
+      const params = new URLSearchParams(window.location.search);
+      const invParam = (params.get("inv") || params.get("INV") || "").trim();
+      const filaParam = (params.get("fila") || params.get("FILA") || "").trim();
+
+      if (invParam || filaParam) {
+        consultarInstrumento(invParam, filaParam);
+      } else {
+        mostrarBuscador();
+      }
+    })();
   </script>
 </body>
 </html>
